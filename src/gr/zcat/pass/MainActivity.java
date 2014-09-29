@@ -68,6 +68,8 @@ public class MainActivity extends ActionBarActivity {
     	for(int i = 0; i < 256; i++) {
     		if(i < 10) {
     			dict.put("0" + Integer.toHexString(i), String.valueOf(allowedSymbols[i]));
+    		} else {
+    			dict.put(Integer.toHexString(i), String.valueOf(allowedSymbols[i]));
     		}
     	}
     }
