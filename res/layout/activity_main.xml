@@ -8,19 +8,13 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="gr.zcat.pass.MainActivity" >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
-
     <EditText
         android:id="@+id/editText1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/button1"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/textView1"
         android:ems="10"
         android:hint="@string/hint" >
 
@@ -33,8 +27,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/editText1"
         android:layout_marginTop="18dp"
-        android:layout_toEndOf="@id/textView1"
-        android:layout_toRightOf="@+id/textView1"
         android:onClick="getPass"
         android:text="@string/cypher" />
 
@@ -42,10 +34,9 @@
         android:id="@+id/editText2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_alignStart="@+id/textView1"
-        android:layout_alignRight="@+id/editText1"
         android:layout_alignEnd="@+id/editText1"
+        android:layout_alignLeft="@+id/button1"
+        android:layout_alignRight="@+id/editText1"
         android:layout_below="@+id/button1"
         android:layout_marginTop="32dp"
         android:ems="10"

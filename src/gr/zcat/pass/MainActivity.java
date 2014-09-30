@@ -1,11 +1,8 @@
 package gr.zcat.pass;
 
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Hashtable;
-
-import javax.crypto.Cipher;
-import javax.crypto.NoSuchPaddingException;
-
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -21,7 +18,7 @@ public class MainActivity extends ActionBarActivity {
 		']', '}', '|', ':', ';', '/', '?', '>', '.', ',', '<', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
 		'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
 		'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
-	private final char[] bannedSymbols = {'\\', '"', '\''};
+	private final char[] bannedSymbols = {'\\', '\"', '\''};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,26 +47,27 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
     
-    @SuppressWarnings("static-access")
-	public void getPass(View view) {
-    	Cipher cy = null;
-//    	EditText editText1 = (EditText) findViewById(R.id.editText1);
+    public void getPass(View view) {
     	EditText editText = (EditText) findViewById(R.id.editText2);
-    	try {
-			editText.setText(cy.getInstance("SHA-3").getAlgorithm());
+    	MessageDigest md;
+		try {
+			md = MessageDigest.getInstance("MD5");
+			editText.setText(new String(md.digest(editText.getText().toString().getBytes())));
 		} catch (NoSuchAlgorithmException e) {
 			editText.setText("no such algo");
-		} catch (NoSuchPaddingException e) {
-			editText.setText("no such padding");
+			e.printStackTrace();
 		}
+//    	EditText editText1 = (EditText) findViewById(R.id.editText1);
+    	
+		
     }
     
     private void initializeDict() {
     	for(int i = 0; i < 256; i++) {
     		if(i < 10) {
-    			dict.put("0" + Integer.toHexString(i), String.valueOf(allowedSymbols[i]));
+    			dict.put("0" + Integer.toHexString(i), String.valueOf(allowedSymbols[i % 81]));
     		} else {
-    			dict.put(Integer.toHexString(i), String.valueOf(allowedSymbols[i]));
+    			dict.put(Integer.toHexString(i), String.valueOf(allowedSymbols[i % 81]));
     		}
     	}
     }
