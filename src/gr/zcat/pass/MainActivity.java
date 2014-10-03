@@ -2,7 +2,10 @@ package gr.zcat.pass;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Formatter;
 import java.util.Hashtable;
+import java.util.TreeSet;
+
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,12 +16,13 @@ import android.widget.EditText;
 
 public class MainActivity extends ActionBarActivity {
 	
-	private final Hashtable<String, String> dict = new Hashtable<String, String>(160);
+	private final Hashtable<String, String> dict = new Hashtable<String, String>(256);
 	private final char[] allowedSymbols = {'`', '~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '-', '+', '=', '{', '[',
 		']', '}', '|', ':', ';', '/', '?', '>', '.', ',', '<', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
 		'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
 		'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
-	private final char[] bannedSymbols = {'\\', '\"', '\''};
+	private final TreeSet<String> bannedSymbols = new TreeSet<String>();
+	//{'\\', '\"', '\''};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +30,6 @@ public class MainActivity extends ActionBarActivity {
         initializeDict();
         setContentView(R.layout.activity_main);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -48,26 +51,46 @@ public class MainActivity extends ActionBarActivity {
     }
     
     public void getPass(View view) {
-    	EditText editText = (EditText) findViewById(R.id.editText2);
+    	EditText editText1 = (EditText) findViewById(R.id.editText1);
+    	EditText editText2 = (EditText) findViewById(R.id.editText2);
     	MessageDigest md;
 		try {
-			md = MessageDigest.getInstance("MD5");
-			editText.setText(new String(md.digest(editText.getText().toString().getBytes())));
+			md = MessageDigest.getInstance("SHA-512");
+			byte[] hash = md.digest(editText1.getText().toString().getBytes());
+			StringBuilder sb = new StringBuilder(hash.length * 2);
+			Formatter formatter = new Formatter(sb); 
+			for (byte b : hash) { 
+				formatter.format("%02x", b);
+			}
+			editText2.setText(sb.toString());
+			//editText2.setText(Integer.toHexString(hash[0]));
 		} catch (NoSuchAlgorithmException e) {
-			editText.setText("no such algo");
+			editText2.setText("no such algo");
 			e.printStackTrace();
 		}
-//    	EditText editText1 = (EditText) findViewById(R.id.editText1);
-    	
-		
     }
     
     private void initializeDict() {
+    	bannedSymbols.add("\"");
+    	bannedSymbols.add("\\");
+    	bannedSymbols.add("\'");
     	for(int i = 0; i < 256; i++) {
-    		if(i < 10) {
-    			dict.put("0" + Integer.toHexString(i), String.valueOf(allowedSymbols[i % 81]));
+    		if(!bannedSymbols.contains(String.valueOf(allowedSymbols[i % 81]))) {
+	    		if(i < 10) {
+	    			dict.put("0" + Integer.toHexString(i), String.valueOf(allowedSymbols[i % 81]));
+	    		} else {
+	    			dict.put(Integer.toHexString(i), String.valueOf(allowedSymbols[i % 81]));
+	    		}
     		} else {
-    			dict.put(Integer.toHexString(i), String.valueOf(allowedSymbols[i % 81]));
+    			int j = i;
+    			while(bannedSymbols.contains(String.valueOf(allowedSymbols[j % 81]))) {
+    				j++;
+    			}
+    			if(i < 10) {
+	    			dict.put("0" + Integer.toHexString(j), String.valueOf(allowedSymbols[j % 81]));
+	    		} else {
+	    			dict.put(Integer.toHexString(j), String.valueOf(allowedSymbols[j % 81]));
+	    		}
     		}
     	}
     }

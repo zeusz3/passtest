@@ -4,8 +4,11 @@
     <string name="app_name">Pass</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="hint">none</string>
+    <string name="logic1">Logic1</string>
     <string name="cypher">cypher</string>
-    <string name="hint1">noce</string>
+    <string name="logic2">Logic2</string>
+    <string name="logic3">Logic3</string>
+    <string name="logic4">Logic4</string>
+    <string name="logic5">Logic5</string>
 
 </resources>
