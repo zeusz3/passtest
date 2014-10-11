@@ -16,7 +16,7 @@ import android.widget.EditText;
 
 public class MainActivity extends ActionBarActivity {
 	
-	private final Hashtable<String, String> dict = new Hashtable<String, String>(256);
+	private final Hashtable<Byte, String> dict = new Hashtable<Byte, String>(256);
 	private final char[] allowedSymbols = {'`', '~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '-', '+', '=', '{', '[',
 		']', '}', '|', ':', ';', '/', '?', '>', '.', ',', '<', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
 		'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
@@ -51,24 +51,36 @@ public class MainActivity extends ActionBarActivity {
     }
     
     public void getPass(View view) {
-    	EditText editText1 = (EditText) findViewById(R.id.editText1);
-    	EditText editText2 = (EditText) findViewById(R.id.editText2);
-    	MessageDigest md;
+		EditText editText1 = (EditText) findViewById(R.id.logicETX1);
+		EditText editText2 = (EditText) findViewById(R.id.logicETX2);
+		EditText editText3 = (EditText) findViewById(R.id.logicETX3);
+		EditText editText4 = (EditText) findViewById(R.id.logicETX4);
+		EditText editText5 = (EditText) findViewById(R.id.logicETX5);
+		EditText passLogicETX = (EditText) findViewById(R.id.passLogicETX);
+		MessageDigest md;
 		try {
 			md = MessageDigest.getInstance("SHA-512");
-			byte[] hash = md.digest(editText1.getText().toString().getBytes());
-			StringBuilder sb = new StringBuilder(hash.length * 2);
-			Formatter formatter = new Formatter(sb); 
-			for (byte b : hash) { 
-				formatter.format("%02x", b);
-			}
-			editText2.setText(sb.toString());
+			byte[][] hash = new byte[5][];
+			hash[0] = md.digest(editText1.getText().toString().getBytes());
+			hash[1] = md.digest(editText2.getText().toString().getBytes());
+			hash[2] = md.digest(editText3.getText().toString().getBytes());
+			hash[3] = md.digest(editText4.getText().toString().getBytes());
+			hash[4] = md.digest(editText5.getText().toString().getBytes());
+			StringBuilder sb = new StringBuilder(hash[0].length);
+			for(int i = 0; i < hash[0].length && i < 12*(hash[0].length/12); i+=(hash[0].length/(12))) {
+                int b = 0;
+                for (int j = 0; j < 5; j++) {
+                    b ^= hash[j][i];
+                }
+                sb.append(dict.get((byte)b));
+            }
+			passLogicETX.setText(sb.toString());
 			//editText2.setText(Integer.toHexString(hash[0]));
 		} catch (NoSuchAlgorithmException e) {
 			editText2.setText("no such algo");
 			e.printStackTrace();
 		}
-    }
+	}
     
     private void initializeDict() {
     	bannedSymbols.add("\"");
@@ -76,21 +88,13 @@ public class MainActivity extends ActionBarActivity {
     	bannedSymbols.add("\'");
     	for(int i = 0; i < 256; i++) {
     		if(!bannedSymbols.contains(String.valueOf(allowedSymbols[i % 81]))) {
-	    		if(i < 10) {
-	    			dict.put("0" + Integer.toHexString(i), String.valueOf(allowedSymbols[i % 81]));
-	    		} else {
-	    			dict.put(Integer.toHexString(i), String.valueOf(allowedSymbols[i % 81]));
-	    		}
+	    		dict.put((byte)i, String.valueOf(allowedSymbols[i % 81]));
     		} else {
     			int j = i;
     			while(bannedSymbols.contains(String.valueOf(allowedSymbols[j % 81]))) {
     				j++;
     			}
-    			if(i < 10) {
-	    			dict.put("0" + Integer.toHexString(j), String.valueOf(allowedSymbols[j % 81]));
-	    		} else {
-	    			dict.put(Integer.toHexString(j), String.valueOf(allowedSymbols[j % 81]));
-	    		}
+	    		dict.put((byte)j, String.valueOf(allowedSymbols[j % 81]));
     		}
     	}
     }

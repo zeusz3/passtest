@@ -7,63 +7,77 @@
     tools:context="gr.zcat.pass.MainActivity" >
 
     <EditText
-        android:id="@+id/editText1"
+        android:id="@+id/logicETX1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
         android:ems="10"
         android:hint="@string/logic1" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/logicETX2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp"
         android:ems="10"
         android:hint="@string/logic2" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/logicETX3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp"
         android:ems="10"
         android:hint="@string/logic3" />
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/logicETX4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp"
         android:ems="10"
         android:hint="@string/logic4" />
 
     <EditText
-        android:id="@+id/editText5"
+        android:id="@+id/logicETX5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp"
         android:ems="10"
         android:hint="@string/logic5" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/cypherBTN"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="5dp"
         android:layout_gravity="right|bottom"
         android:onClick="getPass"
         android:text="@string/cypher" />
+
+    <EditText
+        android:id="@+id/passLogicETX"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp"
+        android:inputType="none"
+        android:ems="10"
+        android:text="@string/pass" >
+
+        <requestFocus />
+    </EditText>
 
 </LinearLayout>
